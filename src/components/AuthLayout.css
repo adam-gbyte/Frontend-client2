@@ -1,0 +1,27 @@
+.auth-layout-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem; /* 24px */
+}
+
+.auth-layout-box {
+  /* padding: 20px; */
+  max-width: 28rem; /* 448px */
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(16px);
+  border-radius: 1rem; /* rounded-2xl */
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-xl */
+  padding: 2rem; /* 32px */
+}
+
+.auth-layout-title {
+  font-family: "Dancing Script", cursive;
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;
+  text-align: center;
+  color: #1f2937; /* text-gray-800 */
+  margin-bottom: 1.5rem; /* mb-6 */
+}
