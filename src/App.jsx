@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Beranda from "./pages/Beranda";
-import Admin from "./pages/admin";
+import Admin from "./pages/Admin";
 import About from "./pages/About";
 import News from "./pages/News";
 import Services from "./pages/Services";
