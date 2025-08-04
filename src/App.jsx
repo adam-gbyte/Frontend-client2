@@ -4,7 +4,7 @@ import Admin from "./pages/Admin";
 import About from "./pages/About";
 import News from "./pages/News";
 import Services from "./pages/Services";
-import LoginForm from "./pages/auth/login";
+import LoginForm from "./pages/auth/Login";
 
 function App() {
   return (
