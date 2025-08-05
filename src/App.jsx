@@ -15,7 +15,7 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/about" element={<About />} />
-          <Route path="/news" element={<News />} />
+          <Route path="/blog" element={<News />} />
           <Route path="/services" element={<Services />} />
 
           {/* Catch-all route for 404 Not Found */}
