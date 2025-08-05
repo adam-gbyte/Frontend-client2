@@ -1,7 +1,9 @@
+// ImageUpload.jsx
 import { useRef, useState, useEffect } from "react";
 import { IKUpload } from "imagekitio-react";
 import axios from "axios";
 import { Trash2, Upload } from "lucide-react";
+import "./ImageUpload.css";
 
 // Fungsi autentikasi
 const authenticator = async () => {
@@ -18,7 +20,6 @@ const authenticator = async () => {
   }
 };
 
-// Komponen Upload Reusable
 const ImageUpload = ({
   folder = "defaultFolder",
   onUploaded = () => {},
@@ -34,9 +35,7 @@ const ImageUpload = ({
 
   const onSuccess = (res) => {
     const imageUrl = res.url;
-    if (onUploaded) {
-      onUploaded(imageUrl);
-    }
+    if (onUploaded) onUploaded(imageUrl);
   };
 
   const onError = (err) => {
@@ -63,14 +62,14 @@ const ImageUpload = ({
   };
 
   return (
-    <div className="m-5 mx-auto flex w-full max-w-md flex-col items-center rounded-lg bg-gray-100 p-6">
+    <div className="upload-container">
       <IKUpload
         ref={ikUploadRef}
         onSuccess={onSuccess}
         onError={onError}
         validateFile={validateFile}
-        publicKey={import.meta.env.VITE_PUBLIC_KEY}
-        urlEndpoint={import.meta.env.VITE_URL_IMAGE_KIT}
+        publicKey={import.meta.env.VITE_IMAGEKIT_PUBLIC_KEY}
+        urlEndpoint={import.meta.env.VITE_IMAGEKIT_URL_ENDPOINT}
         authenticator={authenticator}
         style={{ display: "none" }}
         folder={`/weddings/${folder}`}
@@ -78,7 +77,7 @@ const ImageUpload = ({
       {!imageUrl ? (
         <>
           <svg
-            className="mx-auto h-12 w-12 text-gray-400"
+            className="upload-icon"
             stroke="currentColor"
             fill="none"
             viewBox="0 0 48 48"
@@ -91,35 +90,21 @@ const ImageUpload = ({
               strokeLinejoin="round"
             />
           </svg>
-          <button
-            onClick={handleUploadClick}
-            className="flex cursor-pointer items-center justify-center rounded-lg bg-blue-500 px-4 py-2 text-white"
-          >
+          <button onClick={handleUploadClick} className="upload-button">
             Upload foto
             <Upload size={24} className="ml-2" />
           </button>
         </>
       ) : (
-        <div className="relative mt-4">
-          <img
-            src={imageUrl}
-            alt="Uploaded"
-            className="h-32 w-32 rounded-lg object-cover"
-          />
-          <button
-            onClick={handleRemoveImage}
-            className="absolute top-0 right-0 p-2 text-red-500"
-          >
+        <div className="uploaded-image">
+          <img src={imageUrl} alt="Uploaded" />
+          <button onClick={handleRemoveImage} className="remove-button">
             <Trash2 size={24} />
           </button>
         </div>
       )}
 
-      {error && (
-        <div className="mt-4 w-full rounded-lg border border-red-300 bg-red-100 p-3 text-sm text-red-700">
-          {error}
-        </div>
-      )}
+      {error && <div className="upload-error">{error}</div>}
     </div>
   );
 };

@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 import "../fonts/fonts.css";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/Topbar";
@@ -8,8 +11,26 @@ import KenapaKami from "../components/KenapaKami";
 import TourCards from "../components/TourCards";
 import TourIconsSection from "../components/TourIconSection";
 import HeroSection from "../components/HeroSection";
+// import { useState } from "react";
 
 export default function Beranda() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      // const token = localStorage.getItem("token");
+      const apiUrl = import.meta.env.VITE_URL_API;
+      try {
+        const res = await axios.get(`${apiUrl}/tours`);
+
+        console.log(res.data); // Data user
+        setData(res.data);
+      } catch (err) {
+        console.error("Gagal mengambil data", err);
+      }
+    };
+
+    fetchData();
+  }, []);
   // GET DATA FROM API
   const tours = [
     {
@@ -149,7 +170,7 @@ export default function Beranda() {
       <Navbar />
       <HeroSection />
       <TourIconsSection />
-      {tours.map((group, index) => (
+      {data.map((group, index) => (
         <TourCards key={index} data={group} />
       ))}
       <KenapaKami />
