@@ -5,6 +5,7 @@ import About from "./pages/About";
 import News from "./pages/News";
 import Services from "./pages/Services";
 import LoginForm from "./pages/auth/Login";
+import Cabang from "./pages/Cabang";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<News />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/cabang" element={<Cabang />} />
 
           {/* Catch-all route for 404 Not Found */}
           <Route path="*" element={<h1>404 Not Found</h1>} />

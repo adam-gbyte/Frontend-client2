@@ -4,14 +4,19 @@ export default function HeroSection() {
       <div className="slideshow-container">
         {/* Slide 1 - Video */}
         {/* <a href="/PROMO 1.html"> */}
-        <video
+        <img
           className="bg-slide"
-          src="https://ik.imagekit.io/barokahtour/videos/video-section.mp4?updatedAt=1754211473918"
+          src="https://ik.imagekit.io/barokahtour/images/biru.jpeg?updatedAt=1754211027021"
+          alt="Image 1"
+        />
+        {/* <video
+          className="bg-slide"
+          src="https://ik.imagekit.io/barokahtour/videos/biru.jpeg"
           autoPlay
           muted
           loop
           playsInline
-        ></video>
+        ></video> */}
         {/* </a> */}
         {/* Slide 2 - Gambar */}
         <a href="/PROMO 2.html">
