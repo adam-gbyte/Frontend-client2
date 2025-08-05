@@ -71,12 +71,12 @@ const Navbar = () => {
                 }}
               >
                 <li>
-                  <a href="sukabumi.html" className="dropdown-link">
+                  <a href="#sukabumi" className="dropdown-link">
                     Sukabumi
                   </a>
                 </li>
                 <li>
-                  <a href="yogyakarta.html" className="dropdown-link">
+                  <a href="#yogyakarta" className="dropdown-link">
                     Yogyakarta
                   </a>
                 </li>
@@ -86,7 +86,7 @@ const Navbar = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="surabaya.html" className="dropdown-link">
+                  <a href="#surabaya" className="dropdown-link">
                     Surabaya
                   </a>
                 </li>
@@ -94,12 +94,12 @@ const Navbar = () => {
             )}
           </li>
           <li>
-            <a href="services" className="nav-link">
+            <a href="/services" className="nav-link">
               Layanan
             </a>
           </li>
           <li>
-            <a href="blog" className="nav-link">
+            <a href="/blog" className="nav-link">
               Travel News
             </a>
           </li>

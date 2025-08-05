@@ -7,7 +7,7 @@ export default function TourCards({ data }) {
     <section className="tour-cards-section">
       <h3 className="tour-section-title">
         PAKET WISATA {city.toUpperCase()}
-        <a href={`/${city.toLowerCase()}.html`} className="lihat-semua-link">
+        <a href={`/${city.toLowerCase()}`} className="lihat-semua-link">
           Lihat Semua
         </a>
       </h3>
@@ -19,7 +19,7 @@ export default function TourCards({ data }) {
             <h4>{tour.title}</h4>
             <p className="price-label">Mulai dari</p>
             <strong className="price-value">{tour.price}</strong>
-            <a href={`/${city.toLowerCase()}.html`} className="detail-button">
+            <a href={`/${city.toLowerCase()}`} className="detail-button">
               Lihat Detail
             </a>
           </div>
