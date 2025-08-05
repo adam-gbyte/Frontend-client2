@@ -31,7 +31,7 @@ export default function TourIconsSection() {
         >
           <div className="icon-circle">
             <img
-              src="/images/jeram.jpeg"
+              src="https://ik.imagekit.io/barokahtour/images/jeram.jpeg?updatedAt=1754211050605"
               alt="Paket Wisata"
               className="icon-image"
             />
@@ -53,7 +53,7 @@ export default function TourIconsSection() {
         >
           <div className="icon-circle">
             <img
-              src="/images/situ.jpeg"
+              src="https://ik.imagekit.io/barokahtour/images/situ.jpeg?updatedAt=1754211068061"
               alt="One Day Trip"
               className="icon-image"
             />
@@ -75,7 +75,7 @@ export default function TourIconsSection() {
         >
           <div className="icon-circle">
             <img
-              src="/images/pantai-bali.jpeg"
+              src="https://ik.imagekit.io/barokahtour/images/pantai-bali.jpeg?updatedAt=1754211055932"
               alt="Overland Umum"
               className="icon-image"
             />
@@ -97,7 +97,7 @@ export default function TourIconsSection() {
         >
           <div className="icon-circle">
             <img
-              src="/images/services-bg.jpg"
+              src="https://ik.imagekit.io/barokahtour/images/services-bg.jpg?updatedAt=1754211068367"
               alt="Event Organizer"
               className="icon-image"
             />
