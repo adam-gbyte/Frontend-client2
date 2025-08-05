@@ -15,22 +15,36 @@ import HeroSection from "../components/HeroSection";
 
 export default function Beranda() {
   const [data, setData] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      // const token = localStorage.getItem("token");
-      const apiUrl = import.meta.env.VITE_URL_API;
-      try {
-        const res = await axios.get(`${apiUrl}/tours`);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     // const token = localStorage.getItem("token");
+  //     try {
+  //       const res = await axios.get(`${apiUrl}/tours`);
 
-        console.log(res.data); // Data user
+  //       console.log(res.data); // Data user
+  //       setData(res.data);
+  //     } catch (err) {
+  //       console.error("Gagal mengambil data", err);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
+
+  const apiUrl = import.meta.env.VITE_URL_API;
+
+  useEffect(() => {
+    // Ambil semua data kota + tours
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(`${apiUrl}/cities`);
         setData(res.data);
       } catch (err) {
-        console.error("Gagal mengambil data", err);
+        console.error("Gagal ambil data:", err.message);
       }
     };
-
-    fetchData();
   }, []);
+
   // GET DATA FROM API
   const tours = [
     {

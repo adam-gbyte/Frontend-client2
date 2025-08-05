@@ -1,217 +1,171 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import ImageUpload from "../components/admin/ImageUpload";
-import Sidebar from "../components/ui/Sidebar";
-import { Navigate } from "react-router-dom";
+import "../style/admin.css";
 
 export default function Admin() {
-  const apiUrl = import.meta.env.VITE_URL_API;
+  const apiUrl = import.meta.env.VITE_URL_API || "http://localhost:5000/api";
 
-  const [currentTab, setCurrentTab] = useState("city");
-
-  const [uploadedUrl, setUploadedUrl] = useState("");
   const [cities, setCities] = useState([]);
   const [newCity, setNewCity] = useState("");
-  const [tourData, setTourData] = useState({
-    city_id: "",
-    image: "",
-    title: "",
-    price: "",
-  });
+  const [newTour, setNewTour] = useState({ image: "", title: "", price: "" });
+  const [selectedCityId, setSelectedCityId] = useState("");
 
-  // Autentikasi admin
-  useEffect(() => {
-    const fetchData = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const res = await axios.get(`${apiUrl}/auth/admin`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log(res.data); // Data user
-      } catch (err) {
-        console.error("Gagal mengambil data", err);
-        Navigate("/login"); // Redirect ke halaman login jika gagal
-      }
-    };
-
-    fetchData();
-  }, [apiUrl]);
-
-  // Ambil data kota
-  useEffect(() => {
-    axios.get(`${apiUrl}/tours`).then((res) => {
+  const fetchCities = async () => {
+    try {
+      const res = await axios.get(`${apiUrl}/cities`);
       setCities(res.data);
-    });
-  }, [apiUrl]);
-
-  const handleImageUploaded = (url) => {
-    console.log("Image berhasil diunggah:", url);
-    setUploadedUrl(url);
-    setTourData((prev) => ({ ...prev, image: url })); // Sync ke tourData.image
+    } catch (err) {
+      console.error("Gagal ambil data:", err.message);
+    }
   };
 
+  useEffect(() => {
+    fetchCities();
+  }, []);
+
   const handleAddCity = async () => {
-    if (!newCity.trim()) {
-      alert("Nama kota tidak boleh kosong.");
-      return;
-    }
     try {
-      const res = await axios.post(`${apiUrl}/tours/city`, { name: newCity });
-      // Refresh data kota dari server, bukan hanya append
-      const refreshed = await axios.get(`${apiUrl}/tours`);
-      setCities(refreshed.data);
+      await axios.post(`${apiUrl}/cities`, {
+        city: newCity,
+        tours: [],
+      });
       setNewCity("");
+      fetchCities();
     } catch (err) {
-      alert("Gagal tambah kota");
-      console.error(err);
+      console.error("Gagal tambah kota:", err.message);
+    }
+  };
+
+  const handleDeleteCity = async (id) => {
+    try {
+      await axios.delete(`${apiUrl}/cities/${id}`);
+      fetchCities();
+    } catch (err) {
+      console.error("Gagal hapus kota:", err.message);
     }
   };
 
   const handleAddTour = async () => {
-    const { city_id, title, price, image } = tourData;
-
-    console.log("Data tour yang akan ditambahkan:", tourData);
-
-    if (!city_id || !title.trim() || !price.trim() || !image.trim()) {
-      alert("Lengkapi semua data tour terlebih dahulu.");
-      return;
-    }
-
     try {
-      await axios.post(`${apiUrl}/tours/tour`, tourData);
-      alert("Tour berhasil ditambahkan!");
-      setTourData({ city_id: "", image: "", title: "", price: "" });
-      setUploadedUrl("");
+      await axios.post(`${apiUrl}/cities/${selectedCityId}/tours`, newTour);
+      setNewTour({ image: "", title: "", price: "" });
+      fetchCities();
     } catch (err) {
-      alert("Gagal tambah tour");
-      console.error(err);
+      console.error("Gagal tambah tour:", err.message);
     }
   };
 
-  const addAll = async (e) => {
-    e.preventDefault();
-    // Jika kota baru ditambahkan, baru lanjut tambah tour
-    if (newCity.trim()) {
-      await handleAddCity();
+  const handleDeleteTour = async (cityId, tourId) => {
+    try {
+      await axios.delete(`${apiUrl}/cities/${cityId}/tours/${tourId}`);
+      fetchCities();
+    } catch (err) {
+      console.error("Gagal hapus tour:", err.message);
     }
-    await handleAddTour();
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <Sidebar currentTab={currentTab} setCurrentTab={setCurrentTab} />
-      <div style={styles.container}>
-        <h2 style={styles.heading}>
-          {currentTab === "city" ? "Tambah Kota" : "Tambah Tour"}
-        </h2>
+    <div className="admin-wrapper">
+      {/* Sidebar */}
+      <aside className="admin-sidebar">
+        <h2>Admin</h2>
+        <nav>
+          <ul>
+            <li>
+              <a href="#tambah-kota">Tambah Kota</a>
+            </li>
+            <li>
+              <a href="#tambah-tour">Tambah Tour</a>
+            </li>
+            <li>
+              <a href="#data-kota-tour">Data Kota & Tour</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
 
-        <form onSubmit={addAll} style={styles.form}>
-          {currentTab === "city" && (
-            <input
-              type="text"
-              placeholder="Nama kota"
-              value={newCity}
-              onChange={(e) => setNewCity(e.target.value)}
-              style={styles.input}
-            />
-          )}
+      {/* Main Content */}
+      <main className="admin-container">
+        <h2 className="admin-title">Admin Dashboard - Kelola Kota & Tours</h2>
 
-          {currentTab === "tour" && (
-            <>
-              <select
-                value={tourData.city_id}
-                onChange={(e) =>
-                  setTourData({ ...tourData, city_id: e.target.value })
-                }
-                style={styles.input}
-              >
-                <option value="">Pilih Kota</option>
-                {cities.map((city) => (
-                  <option key={city.city_id} value={city.city_id}>
-                    {city.city}
-                  </option>
+        <div className="section" id="tambah-kota">
+          <h3>Tambah Kota Baru</h3>
+          <input
+            type="text"
+            placeholder="Nama kota"
+            value={newCity}
+            onChange={(e) => setNewCity(e.target.value)}
+          />
+          <button onClick={handleAddCity}>Tambah Kota</button>
+        </div>
+
+        <div className="section" id="tambah-tour">
+          <h3>Tambah Tour ke Kota</h3>
+          <select
+            value={selectedCityId}
+            onChange={(e) => setSelectedCityId(e.target.value)}
+          >
+            <option value="">-- Pilih Kota --</option>
+            {cities.map((city) => (
+              <option key={city._id} value={city._id}>
+                {city.city}
+              </option>
+            ))}
+          </select>
+          <input
+            type="text"
+            placeholder="Image URL"
+            value={newTour.image}
+            onChange={(e) => setNewTour({ ...newTour, image: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Judul Tour"
+            value={newTour.title}
+            onChange={(e) => setNewTour({ ...newTour, title: e.target.value })}
+          />
+          <input
+            type="text"
+            placeholder="Harga"
+            value={newTour.price}
+            onChange={(e) => setNewTour({ ...newTour, price: e.target.value })}
+          />
+          <button onClick={handleAddTour}>Tambah Tour</button>
+        </div>
+
+        <div className="section" id="data-kota-tour">
+          <h3>Data Kota & Tour</h3>
+          {cities.map((city) => (
+            <div key={city._id} className="city-card">
+              <h4>
+                {city.city}{" "}
+                <button
+                  className="btn-delete"
+                  onClick={() => handleDeleteCity(city._id)}
+                >
+                  Hapus Kota
+                </button>
+              </h4>
+              <ul className="tour-list">
+                {city.tours.map((tour) => (
+                  <li key={tour._id} className="tour-item">
+                    <img src={tour.image} alt={tour.title} width="100" />
+                    <div>
+                      <strong>{tour.title}</strong> - {tour.price}
+                    </div>
+                    <button
+                      className="btn-delete"
+                      onClick={() => handleDeleteTour(city._id, tour._id)}
+                    >
+                      Hapus Tour
+                    </button>
+                  </li>
                 ))}
-              </select>
-
-              <ImageUpload
-                folder="barokahtour"
-                onUploaded={handleImageUploaded}
-                defaultImage={uploadedUrl}
-              />
-
-              <input
-                type="text"
-                placeholder="Image path (optional)"
-                value={tourData.image}
-                onChange={(e) =>
-                  setTourData({ ...tourData, image: e.target.value })
-                }
-                style={styles.input}
-              />
-
-              <input
-                type="text"
-                placeholder="Judul tour"
-                value={tourData.title}
-                onChange={(e) =>
-                  setTourData({ ...tourData, title: e.target.value })
-                }
-                style={styles.input}
-              />
-
-              <input
-                type="text"
-                placeholder="Harga (ex: IDR 500.000)"
-                value={tourData.price}
-                onChange={(e) =>
-                  setTourData({ ...tourData, price: e.target.value })
-                }
-                style={styles.input}
-              />
-            </>
-          )}
-
-          <button type="submit" style={styles.button}>
-            {currentTab === "city" ? "Tambah Kota" : "Tambah Tour"}
-          </button>
-        </form>
-      </div>
+              </ul>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    flex: 1,
-    padding: "40px",
-    backgroundColor: "#f8f9fa",
-    minHeight: "100vh",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "24px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "16px",
-    maxWidth: "500px",
-  },
-  input: {
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "8px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "12px",
-    backgroundColor: "#007bff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "8px",
-    cursor: "pointer",
-    marginTop: "8px",
-  },
-};
