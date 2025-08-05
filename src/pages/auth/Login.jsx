@@ -22,7 +22,7 @@ export default function LoginForm() {
     setError("");
     try {
       const apiUrl = import.meta.env.VITE_URL_API;
-      const response = await axios.post(`${apiUrl}/auth/login`, form, {
+      const response = await axios.post(`${apiUrl}/login`, form, {
         withCredentials: true,
       });
 
@@ -31,8 +31,7 @@ export default function LoginForm() {
 
       // Simpan ke localStorage
       localStorage.setItem("token", token);
-      //   navigate("/");
-      //   window.location.reload();
+      navigate("/admin");
     } catch (err) {
       console.error("Login error:", err.response?.data);
       setError(err.response?.data);
@@ -45,7 +44,6 @@ export default function LoginForm() {
 
   return (
     <AuthLayout title="Masuk ke Akun">
-      {/* {error.global && <p className="error-message">{error.global}</p>} */}
       <form onSubmit={handleSubmit} className="login-form">
         <div className="input-group">
           <User className="input-icon" size={20} />
@@ -58,9 +56,6 @@ export default function LoginForm() {
             className="input-field"
             required
           />
-          {/* {error.errorUsername && (
-            <p className="error-text">{error.errorUsername}</p>
-          )} */}
         </div>
 
         <div className="input-group">
@@ -81,9 +76,6 @@ export default function LoginForm() {
           >
             {show ? <EyeOff size={18} /> : <Eye size={18} />}
           </button>
-          {/* {error.errorPassword && (
-            <p className="error-text">{error.errorPassword}</p>
-          )} */}
         </div>
 
         <button type="submit" className="submit-button">
