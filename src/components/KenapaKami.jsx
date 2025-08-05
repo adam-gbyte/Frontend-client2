@@ -33,7 +33,7 @@ export default function KenapaKami() {
           }}
         >
           <img
-            src="/images/telp.png"
+            src="https://ik.imagekit.io/barokahtour/images/telp.png?updatedAt=1754211068217"
             alt="Icon Respon Cepat"
             style={{
               width: "30px",
@@ -60,7 +60,7 @@ export default function KenapaKami() {
           }}
         >
           <img
-            src="/images/tameng.jpeg"
+            src="https://ik.imagekit.io/barokahtour/images/tameng.jpeg?updatedAt=1754211067957"
             alt="Icon Terpercaya"
             style={{
               width: "30px",
@@ -87,7 +87,7 @@ export default function KenapaKami() {
           }}
         >
           <img
-            src="/images/kop.jpeg"
+            src="https://ik.imagekit.io/barokahtour/images/kop.jpeg?updatedAt=1754211049856"
             alt="Icon Trip"
             style={{
               width: "30px",
