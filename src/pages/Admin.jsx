@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "../style/admin.css";
+import ImageUpload from "../components/admin/ImageUpload";
 
 export default function Admin() {
   const apiUrl = import.meta.env.VITE_URL_API || "http://localhost:5000/api";
@@ -9,6 +10,8 @@ export default function Admin() {
   const [newCity, setNewCity] = useState("");
   const [newTour, setNewTour] = useState({ image: "", title: "", price: "" });
   const [selectedCityId, setSelectedCityId] = useState("");
+
+  const [uploadedImageUrl, setUploadedImageUrl] = useState("");
 
   const fetchCities = async () => {
     try {
@@ -45,10 +48,11 @@ export default function Admin() {
     }
   };
 
-  const handleAddTour = async () => {
+  const handleAddTour = async (img) => {
     try {
       await axios.post(`${apiUrl}/cities/${selectedCityId}/tours`, newTour);
-      setNewTour({ image: "", title: "", price: "" });
+      setNewTour({ image: img, title: "", price: "" });
+      setUploadedImageUrl(img);
       fetchCities();
     } catch (err) {
       console.error("Gagal tambah tour:", err.message);
@@ -62,6 +66,11 @@ export default function Admin() {
     } catch (err) {
       console.error("Gagal hapus tour:", err.message);
     }
+  };
+
+  const handleImageUploaded = (url) => {
+    console.log("Image berhasil diupload:", url);
+    setUploadedImageUrl(url);
   };
 
   return (
@@ -112,12 +121,17 @@ export default function Admin() {
               </option>
             ))}
           </select>
-          <input
+          <ImageUpload
+            folder="BarokahTour"
+            onUploaded={handleAddTour}
+            defaultImage={uploadedImageUrl}
+          />
+          {/* <input
             type="text"
             placeholder="Image URL"
             value={newTour.image}
             onChange={(e) => setNewTour({ ...newTour, image: e.target.value })}
-          />
+          /> */}
           <input
             type="text"
             placeholder="Judul Tour"

@@ -9,7 +9,7 @@ import "./ImageUpload.css";
 const authenticator = async () => {
   try {
     const apiUrl = import.meta.env.VITE_URL_API;
-    const response = await axios.get(`${apiUrl}/auth/image-kit`);
+    const response = await axios.get(`${apiUrl}/v1/auth/image-kit`);
     const { signature, expire, token } = response.data;
     return { signature, expire, token };
   } catch (error) {
